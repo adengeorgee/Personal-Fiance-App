@@ -1,13 +1,13 @@
-# Finance OS — iPhone
+# Aden's Finance Manager
 
-A mobile-first personal finance app designed for iPhone. It uses localStorage and does not need Python, a laptop server, or Wi-Fi syncing.
+Mobile-first personal finance PWA for iPhone.
 
-## iPhone installation
-1. Put this folder on a web host (for example a static site host).
-2. Open the site in Safari on iPhone.
-3. Tap Share → Add to Home Screen.
-4. Open Finance OS from the Home Screen.
-5. Create a 4–8 digit PIN.
+## Publish on GitHub Pages
+1. Upload `index.html`, `manifest.json`, and `sw.js` to the repository root.
+2. In the repository, open **Settings → Pages**.
+3. Under **Build and deployment**, choose **Deploy from a branch**.
+4. Choose branch **main** and folder **/ (root)**, then Save.
+5. Open the published URL in Safari on iPhone.
+6. Tap **Share → Add to Home Screen**.
 
-## Data
-Finance data stays in the browser on that iPhone. Use Export backup regularly. Import restores a JSON backup.
+The app stores finance data locally on the device. Export a backup before deleting data or clearing Safari website data.
