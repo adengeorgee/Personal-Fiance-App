@@ -49,24 +49,39 @@
   .lockbox p{margin:0 0 13px}
   .pin{height:52px;padding:10px;font-size:21px}
 }
+
+/* Finance OS v3 mobile/data improvements */
+.welcome{font-size:13px;color:var(--text);font-weight:750;margin-top:3px}
+.budgetHealth{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.budgetItem{display:flex;align-items:center;gap:7px;padding:8px 10px;border-radius:13px;background:rgba(255,255,255,.55);border:1px solid rgba(255,255,255,.75);font-size:11px;font-weight:750}
+.budgetIcon{width:20px;height:20px;border-radius:50%;display:grid;place-items:center;font-size:11px}
+.budgetItem.ok .budgetIcon{background:rgba(35,163,106,.14);color:var(--green)}
+.budgetItem.warn .budgetIcon{background:rgba(237,139,50,.15);color:var(--orange)}
+.budgetItem.over .budgetIcon{background:rgba(223,83,98,.15);color:var(--red)}
+.allocedit{display:grid;gap:12px;margin-top:15px}.erow{display:grid;grid-template-columns:125px 1fr 70px;align-items:center;gap:10px;font-size:12px;font-weight:700}.allocInput{width:70px;text-align:right}
+.settingsDanger{border:1px solid rgba(223,83,98,.18);background:rgba(255,245,246,.55)}
+.deleteBtn{background:rgba(223,83,98,.1);border-color:rgba(223,83,98,.18);color:#b83d4b}
+@media(max-width:650px){.welcome{font-size:13px}.budgetHealth{display:grid;grid-template-columns:repeat(2,1fr)}.budgetItem{min-width:0}.erow{grid-template-columns:92px 1fr 66px;gap:7px}.allocInput{width:66px}.moreSheet{max-height:60vh;overflow:auto}}
+
 </style></head><body>
-<div class="lock" id="lock"><div class="lockbox"><div class="eyebrow">PRIVATE FINANCE OS</div><h1 id="lockTitle">Unlock Finance OS</h1><p id="lockText">Your finance data stays on this iPhone.</p><form id="lockForm"><input id="pin" class="pin" inputmode="numeric" pattern="[0-9]*" maxlength="8" autocomplete="current-password" placeholder="••••" required><div id="lockMsg" class="lockmsg"></div><button class="btn primary" style="width:100%;padding:13px" id="lockBtn">Unlock</button></form></div></div>
+<div class="lock" id="lock"><div class="lockbox"><div class="eyebrow">PRIVATE FINANCE OS</div><h1 id="lockTitle">Aden's Finance Manager</h1><p id="lockText">Your finance data stays on this iPhone.</p><form id="lockForm"><input id="pin" class="pin" inputmode="numeric" pattern="[0-9]*" maxlength="4" autocomplete="current-password" placeholder="••••" required><div id="lockMsg" class="lockmsg"></div><button class="btn primary" style="width:100%;padding:13px" id="lockBtn">Unlock</button></form></div></div>
 <div class="app"><aside class="side"><div class="brand">Finance OS<small id="syncStatus">Private • local-first</small></div><nav class="nav">
 <button class="active" data-page="dashboard">Overview</button><button data-page="transactions">Transactions</button><button data-page="allocation">Allocation</button><button data-page="goals">Goals</button><button data-page="investments">Investments</button><button data-page="planning">5-Year Plan</button><button data-page="tax">Tax</button></nav></aside>
 <main>
 <section id="dashboard" class="section active">
-<div class="top"><div><div class="eyebrow" id="monthLabel"></div><div class="title">Your money at a glance.</div></div><div class="actions"><button class="btn" id="exportBtn">Export data</button><button class="btn" id="importBtn">Import backup</button><button class="btn" id="logoutBtn">Lock</button><input id="importFile" type="file" accept=".json" style="display:none"><button class="btn primary" id="quickAdd">+ Transaction</button></div></div>
+<div class="top"><div><div class="eyebrow" id="monthLabel"></div><div class="welcome">Welcome Sir</div><div class="title">Your money at a glance.</div></div><div class="actions"><button class="btn" id="exportBtn">Export data</button><button class="btn" id="importBtn">Import backup</button><button class="btn" id="logoutBtn">Lock</button><input id="importFile" type="file" accept=".json" style="display:none"><button class="btn primary" id="quickAdd">+ Transaction</button></div></div>
 <div class="grid stats"><div class="card stat"><div class="label">Income this month</div><div class="value" id="sIncome">₹0</div><div class="delta" id="sIncomeNote"></div></div><div class="card stat"><div class="label">Spent this month</div><div class="value" id="sSpent">₹0</div><div class="delta" id="sSpentNote"></div></div><div class="card stat"><div class="label">Invested</div><div class="value" id="sInvested">₹0</div><div class="delta">This month's investment flow</div></div><div class="card stat"><div class="label">Net worth</div><div class="value" id="sNet">₹0</div><div class="delta" id="sNetNote"></div></div></div>
+<div class="card mt"><h2>Budget health</h2><div class="sub">Quick view of segments that are within or over your monthly allocation.</div><div id="budgetHealth" class="budgetHealth"></div></div>
 <div class="grid two mt"><div class="card"><h2>Net worth trajectory</h2><div class="sub">Add monthly snapshots in the Net worth section below to build your history.</div><div class="chart" id="netChart"></div></div><div class="card"><h2>Where your income goes</h2><div class="chart" id="pieChart"></div><div class="legend" id="pieLegend"></div></div></div>
 <div class="grid two mt"><div class="card"><h2>Monthly cash flow</h2><div class="chart" id="cashChart"></div></div><div class="card"><h2>Allocation vs actual</h2><div id="allocDash" class="alloc"></div><div class="note" id="allocStatus" style="margin-top:12px"></div></div></div>
 <div class="grid three mt"><div class="card"><h2>Goals</h2><div id="goalMini"></div><button class="btn" data-goto="goals">Manage goals</button></div><div class="card"><h2>Recent transactions</h2><div id="recent"></div></div><div class="card"><h2>Portfolio</h2><table><tbody id="portMini"></tbody></table></div></div>
 </section>
 
 <section id="transactions" class="section"><div class="top"><div><div class="eyebrow">Money movement</div><div class="title">Transactions</div></div></div>
-<div class="card"><h2>Add transaction</h2><form id="txForm"><div class="form"><div class="field"><label>Description</label><input id="desc" required></div><div class="field"><label>Amount (₹)</label><input id="amount" type="number" min="0" step="0.01" required></div><div class="field"><label>Type</label><select id="type"><option value="expense">Expense</option><option value="income">Income</option></select></div><div class="field"><label>Category</label><select id="cat"><option>Necessities</option><option>Splurge</option><option>Investment</option><option>Saving</option><option>Education</option><option>Other</option><option>Salary</option><option>Freelance</option><option>Dividend</option><option>Interest</option></select></div><div class="field"><label>Account</label><input id="account" value="Savings Account"></div><div class="field"><label>Date</label><input id="date" type="date"></div></div><div class="formactions"><button class="btn primary">Save transaction</button></div></form></div>
+<div class="card"><h2>Add transaction</h2><form id="txForm"><div class="form"><div class="field"><label>Description</label><input id="desc" required></div><div class="field"><label>Amount (₹)</label><input id="amount" type="number" min="0" step="0.01" required></div><div class="field"><label>Type</label><select id="type"><option value="expense">Expense</option><option value="income">Income</option></select></div><div class="field"><label>Category</label><select id="cat"><option>Necessities</option><option>Splurge</option><option>Investments</option><option>Savings</option><option>Education</option><option>Gifts</option><option>Others</option><option>Salary</option><option>Freelance</option><option>Dividend</option><option>Interest</option></select></div><div class="field"><label>Account</label><input id="account" value="Savings Account"></div><div class="field"><label>Date</label><input id="date" type="date"></div></div><div class="formactions"><button class="btn primary">Save transaction</button></div></form></div>
 <div class="card mt"><h2>All transactions</h2><div style="overflow:auto"><table><thead><tr><th>Date</th><th>Description</th><th>Type</th><th>Category</th><th>Account</th><th>Amount</th><th></th></tr></thead><tbody id="txTable"></tbody></table></div></div></section>
 
-<section id="allocation" class="section"><div class="top"><div><div class="eyebrow">Your money rules</div><div class="title">Income allocation</div></div></div><div class="card"><div class="form"><div class="field"><label>Monthly income target (₹)</label><input id="incomeTarget" type="number" min="0"></div></div><div class="allocedit" id="allocEdit"></div><div class="note" id="allocMessage" style="margin-top:13px"></div></div></section>
+<section id="allocation" class="section"><div class="top"><div><div class="eyebrow">Your money rules</div><div class="title">Income allocation</div></div></div><div class="card"><div class="form"><div class="field"><label>Monthly income target (₹)</label><input id="incomeTarget" type="number" min="0"></div></div><div class="note" style="margin-top:10px">Type the percentage for each segment. The total should equal 100%.</div><div class="allocedit" id="allocEdit"></div><div class="note" id="allocMessage" style="margin-top:13px"></div><div class="card mt" style="padding:14px;background:rgba(255,255,255,.38)"><h2>Allocation distribution</h2><div id="allocBarGraph" class="alloc"></div></div></div></section>
 
 <section id="goals" class="section"><div class="top"><div><div class="eyebrow">Long-term planning</div><div class="title">Goals</div></div></div><div class="card"><h2>Add a goal</h2><form id="goalForm"><div class="form"><div class="field"><label>Goal name</label><input id="goalName" required placeholder="Emergency fund"></div><div class="field"><label>Target (₹)</label><input id="goalTarget" type="number" min="1" required></div><div class="field"><label>Current amount (₹)</label><input id="goalCurrent" type="number" min="0" value="0"></div></div><div class="formactions"><button class="btn primary">Add goal</button></div></form></div><div id="goalsList" class="grid three mt"></div></section>
 
@@ -102,6 +117,8 @@
 </div>
 </section>
 
+<section id="settings" class="section"><div class="top"><div><div class="eyebrow">Privacy & data</div><div class="title">Data & security</div></div></div><div class="card"><h2>Your data</h2><div class="note">Finance OS stores your data locally on this iPhone. Export a backup before deleting anything.</div><div class="formactions"><button class="btn" id="exportBtn2">Export backup</button><button class="btn deleteBtn" id="deleteAllBtn">Delete all data</button></div></div><div class="card mt"><h2>PIN</h2><div class="note">Your 4-digit PIN is required to unlock the app and to confirm deletion of all data.</div></div></section>
+
 <section id="tax" class="section"><div class="top"><div><div class="eyebrow">Records</div><div class="title">Tax center</div></div></div><div class="grid three"><div class="card"><h2>Salary</h2><div class="value" id="taxSalary">₹0</div><div class="note">Recorded salary income</div></div><div class="card"><h2>Freelance / foreign</h2><div class="value" id="taxFreelance">₹0</div><div class="note">Recorded freelance income</div></div><div class="card"><h2>Interest + dividends</h2><div class="value" id="taxOther">₹0</div><div class="note">Recorded investment income</div></div></div><div class="card mt"><h2>Tax record checklist</h2><div class="note">Keep Form 16, AIS/26AS, PayPal statements, invoices, bank-interest records, dividend records and investment transaction records. This is an organization tool, not tax advice.</div></div></section>
 </main></div><nav class="mobileNav" aria-label="Main navigation">
   <button class="active" data-page="dashboard"><span class="mi">⌂</span><span>Home</span></button>
@@ -110,168 +127,79 @@
   <button data-page="investments"><span class="mi">◒</span><span>Invest</span></button>
   <button id="moreNav"><span class="mi">•••</span><span>More</span></button>
 </nav>
-<div class="moreSheet" id="moreSheet"><button data-page="allocation">Allocation</button><button data-page="planning">5-Year Plan</button><button data-page="tax">Tax</button></div>
+<div class="moreSheet" id="moreSheet"><button data-page="allocation">Allocation</button><button data-page="planning">5-Year Plan</button><button data-page="tax">Tax</button><button data-page="settings">Data & Security</button></div>
 <div class="toast" id="toast"></div>
 <script>
-const KEY="financeOS_v2";
-const defaults={incomeTarget:60000,allocation:[["Investments",20,"#1677ff"],["Savings",20,"#23a36a"],["Necessities",30,"#ed8b32"],["Splurge",10,"#df5362"],["Education",5,"#8168e5"],["Other",15,"#708090"]],transactions:[],goals:[{name:"Emergency fund",target:75000,current:42000},{name:"Bike fund",target:250000,current:115000}],assets:[],netWorth:[{month:"Sep 2026",value:182500}]};
-let state=JSON.parse(localStorage.getItem(KEY)||"null")||defaults;
-let serverOnline=false, saveTimer=null, authenticated=false;
-const lock=document.getElementById("lock"), lockTitle=document.getElementById("lockTitle"), lockText=document.getElementById("lockText"), lockMsg=document.getElementById("lockMsg"), lockBtn=document.getElementById("lockBtn"), pin=document.getElementById("pin");
-function showLock(setup=false){lock.classList.remove("hidden");lockTitle.textContent=setup?"Create your PIN":"Unlock Finance OS";lockText.textContent=setup?"Choose a 4–8 digit PIN. It stays on this iPhone.":"Enter your PIN to access your finance data.";lockBtn.textContent=setup?"Create PIN":"Unlock";lockMsg.textContent="";pin.value="";setTimeout(()=>pin.focus(),100);lock.dataset.setup=setup?"1":"0"}
+const KEY="financeOS_v3";
+const COLORS={Investments:"#1677ff",Savings:"#23a36a",Necessities:"#ed8b32",Splurge:"#df5362",Education:"#8168e5",Gifts:"#c66aef",Others:"#708090"};
+const defaults={incomeTarget:60000,allocation:[["Investments",20,COLORS.Investments],["Savings",20,COLORS.Savings],["Necessities",30,COLORS.Necessities],["Splurge",10,COLORS.Splurge],["Education",5,COLORS.Education],["Gifts",5,COLORS.Gifts],["Others",10,COLORS.Others]],transactions:[],goals:[{name:"Emergency fund",target:75000,current:42000},{name:"Bike fund",target:250000,current:115000}],assets:[],netWorth:[],plan:{growth:5,returnRate:8}};
+function clone(o){return JSON.parse(JSON.stringify(o))}
+let state=JSON.parse(localStorage.getItem(KEY)||"null");
+if(!state){const legacy=JSON.parse(localStorage.getItem("financeOS_v2")||"null");state=legacy||clone(defaults);}
+// Migrate older versions into the new allocation structure and remove the old placeholder net worth.
+if(!Array.isArray(state.allocation)) state.allocation=clone(defaults.allocation);
+const oldNames={Investment:"Investments",Saving:"Savings",Other:"Others"};
+state.allocation=state.allocation.map(x=>[oldNames[x[0]]||x[0],Number(x[1])||0,COLORS[oldNames[x[0]]||x[0]]||x[2]||"#708090"]);
+const requiredNames=defaults.allocation.map(x=>x[0]);
+const existing=new Map(state.allocation.map(x=>[x[0],x]));
+state.allocation=defaults.allocation.map(x=>existing.get(x[0])||clone(x));
+if(!Array.isArray(state.netWorth)) state.netWorth=[];
+if(state.netWorth.length===1 && state.netWorth[0].value===182500 && state.netWorth[0].month==="Sep 2026" && state.transactions.length===0 && state.assets.length===0) state.netWorth=[];
+state.plan=state.plan||clone(defaults.plan);
+let authenticated=false;
+const $=id=>document.getElementById(id);
+const lock=$("lock"),lockTitle=$("lockTitle"),lockText=$("lockText"),lockMsg=$("lockMsg"),lockBtn=$("lockBtn"),pin=$("pin");
+function getPin(){return localStorage.getItem("financeOS_pin")||""}
+function showLock(setup=false){lock.classList.remove("hidden");lockTitle.textContent="Aden's Finance Manager";lockText.textContent=setup?"Create a 4-digit PIN. It stays on this iPhone.":"Enter your 4-digit PIN to access your finance data.";lockBtn.textContent=setup?"Create PIN":"Unlock";lockMsg.textContent="";pin.value="";lock.dataset.setup=setup?"1":"0";setTimeout(()=>pin.focus(),100)}
 function hideLock(){lock.classList.add("hidden");authenticated=true}
-function getPin(){ return localStorage.getItem("financeOS_pin"); }
-function showLock(setup=false){lock.classList.remove("hidden");lockTitle.textContent=setup?"Create your PIN":"Unlock Finance OS";lockText.textContent=setup?"Choose a 4–8 digit PIN. It stays on this iPhone.":"Enter your PIN to access your finance data.";lockBtn.textContent=setup?"Create PIN":"Unlock";lockMsg.textContent="";pin.value="";setTimeout(()=>pin.focus(),100);lock.dataset.setup=setup?"1":"0"}
-function hideLock(){lock.classList.add("hidden");authenticated=true}
-function authStatus(){ if(!getPin()) showLock(true); else showLock(false); renderAll(); }
-function loadServer(){ return Promise.resolve(); }
-function pushServer(){ return Promise.resolve(); }
-function save(){
-  localStorage.setItem(KEY,JSON.stringify(state));
-  renderAll();
-  clearTimeout(saveTimer);
-  syncStatus.textContent="Private • saved on this iPhone";
-}
+function save(){localStorage.setItem(KEY,JSON.stringify(state));renderAll();$("syncStatus").textContent="Private • saved on this iPhone"}
 function money(n){return "₹"+Math.round(Number(n)||0).toLocaleString("en-IN")}
-function toast(s){let t=document.getElementById("toast");t.textContent=s;t.classList.add("show");setTimeout(()=>t.classList.remove("show"),1800)}
+function toast(s){let t=$("toast");t.textContent=s;t.classList.add("show");clearTimeout(window.__toast);window.__toast=setTimeout(()=>t.classList.remove("show"),1800)}
 function monthKey(d=new Date()){return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")}
-function currentTx(){let k=monthKey();return state.transactions.filter(t=>t.date.startsWith(k))}
-function totals(){let tx=currentTx(),income=tx.filter(t=>t.type==="income").reduce((a,t)=>a+t.amount,0),spent=tx.filter(t=>t.type==="expense").reduce((a,t)=>a+t.amount,0),invested=tx.filter(t=>t.type==="expense"&&t.cat==="Investment").reduce((a,t)=>a+t.amount,0);return {income,spent,invested}}
-function renderBars(el,data,max,colors){el.innerHTML=`<svg viewBox="0 0 600 210" preserveAspectRatio="none">${data.map((v,i)=>{let x=24+i*(552/data.length),h=max?Math.max(2,150*v/max):2,y=175-h;return `<rect x="${x}" y="${y}" width="${Math.max(10,400/data.length)}" height="${h}" rx="7" fill="${colors[i%colors.length]}"></rect><text x="${x+4}" y="195" font-size="10" fill="#697588">${v.label}</text><text x="${x+3}" y="${y-5}" font-size="9" fill="#152033">${money(v.value)}</text>`}).join("")}<line x1="20" y1="176" x2="580" y2="176" stroke="rgba(100,115,135,.18)"/></svg>`}
-function pie(el,items){items=items.filter(x=>Number(x.value)>0);if(!items.length){el.innerHTML=`<div class="empty">Set your income allocation to see the chart.</div>`;return}let total=items.reduce((a,x)=>a+x.value,0)||1,c=0,cx=110,cy=105,r=75;let paths=items.map((x,i)=>{let a=x.value/total*Math.PI*2,s=c;c+=a;let large=a>Math.PI?1:0,x1=cx+r*Math.cos(s),y1=cy+r*Math.sin(s),x2=cx+r*Math.cos(c),y2=cy+r*Math.sin(c);return `<path d="M ${cx} ${cy} L ${x1} ${y1} A ${r} ${r} 0 ${large} 1 ${x2} ${y2} Z" fill="${x.color}"/>`}).join("");el.innerHTML=`<svg viewBox="0 0 220 210"><g>${paths}</g><circle cx="${cx}" cy="${cy}" r="43" fill="rgba(255,255,255,.55)"/><text x="${cx}" y="101" text-anchor="middle" font-size="12" fill="#697588">Income</text><text x="${cx}" y="119" text-anchor="middle" font-size="16" font-weight="700" fill="#152033">${money(state.incomeTarget)}</text></svg>`}
-function line(el,data){if(!data.length){el.innerHTML=`<div class="empty">Add a monthly snapshot to see your trend.</div>`;return}let vals=data.map(x=>x.value),min=Math.min(...vals,0),max=Math.max(...vals,1),w=560,h=155,pts=data.map((x,i)=>`${30+i*(w-30)/(Math.max(1,data.length-1))},${175-(x.value-min)/(max-min)*140}`).join(" ");el.innerHTML=`<svg viewBox="0 0 600 210"><polyline points="${pts}" fill="none" stroke="#1677ff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>${data.map((x,i)=>{let xx=30+i*(w-30)/(Math.max(1,data.length-1)),yy=175-(x.value-min)/(max-min)*140;return `<circle cx="${xx}" cy="${yy}" r="5" fill="#fff" stroke="#1677ff" stroke-width="3"/><text x="${xx}" y="198" text-anchor="middle" font-size="9" fill="#697588">${x.month}</text>`}).join("")}</svg>`}
-function renderDashboard(){let t=totals();document.getElementById("sIncome").textContent=money(t.income);document.getElementById("sSpent").textContent=money(t.spent);document.getElementById("sInvested").textContent=money(t.invested);let net=state.netWorth.at(-1)?.value||0;document.getElementById("sNet").textContent=money(net);document.getElementById("sIncomeNote").textContent=money(state.incomeTarget?Math.round(t.income/state.incomeTarget*100):0)+"% of target";document.getElementById("sSpentNote").textContent=(t.income?Math.round(t.spent/t.income*100):0)+"% of income";document.getElementById("sNetNote").textContent=state.netWorth.length>1?"Tracking history":"Add monthly snapshots";
-line(document.getElementById("netChart"),state.netWorth);
-let alloc=state.allocation.map(x=>({label:x[0],value:state.incomeTarget*x[1]/100,color:x[2]}));pie(document.getElementById("pieChart"),alloc);document.getElementById("pieLegend").innerHTML=alloc.map(x=>`<span><i class="dot" style="background:${x.color}"></i>${x.label} ${Math.round(x.value/state.incomeTarget*100)}%</span>`).join("");
-let months={};state.transactions.forEach(x=>{let m=x.date.slice(0,7);months[m]??={income:0,expense:0};months[m][x.type==="income"?"income":"expense"]+=x.amount});let keys=Object.keys(months).slice(-6);renderBars(document.getElementById("cashChart"),keys.map(k=>({label:k.slice(5),value:months[k].income-months[k].expense})),Math.max(...keys.map(k=>Math.abs(months[k].income-months[k].expense)),1),["#23a36a","#1677ff","#8168e5","#ed8b32"]);
-document.getElementById("allocDash").innerHTML=state.allocation.map(x=>`<div class="allocrow"><span>${x[0]}</span><div class="track"><i style="width:${x[1]}%;background:${x[2]}"></i></div><b>${x[1]}%</b></div>`).join("");let sum=state.allocation.reduce((a,x)=>a+x[1],0);document.getElementById("allocStatus").textContent=sum===100?"Allocation totals 100%.":"Allocation totals "+sum+"% — adjust it to 100%.";
-document.getElementById("goalMini").innerHTML=state.goals.slice(0,3).map(g=>`<div class="goal"><div class="goalhead"><span>${g.name}</span><span>${Math.round(g.current/g.target*100)}%</span></div><div class="progress"><i style="width:${Math.min(100,g.current/g.target*100)}%"></i></div></div>`).join("")||'<div class="empty">No goals yet.</div>';
-document.getElementById("recent").innerHTML=state.transactions.slice(-5).reverse().map(t=>`<div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid rgba(100,115,135,.1)"><span>${t.desc}<small style="display:block;color:#697588">${t.cat}</small></span><b class="${t.type==="income"?"pos":"neg"}">${t.type==="income"?"+":"-"}${money(t.amount)}</b></div>`).join("")||'<div class="empty">No transactions yet.</div>';
-document.getElementById("portMini").innerHTML=state.assets.map(a=>`<tr><td>${a.name}</td><td>${money(a.value)}</td></tr>`).join("")||'<tr><td class="note">No assets added.</td></tr>';
-}
-function renderTx(){document.getElementById("txTable").innerHTML=state.transactions.slice().reverse().map((t,i)=>`<tr><td>${t.date}</td><td>${t.desc}</td><td>${t.type}</td><td>${t.cat}</td><td>${t.account}</td><td class="${t.type==="income"?"pos":"neg"}">${t.type==="income"?"+":"-"}${money(t.amount)}</td><td><button class="btn" style="padding:5px 8px" onclick="delTx(${state.transactions.length-1-i})">Delete</button></td></tr>`).join("")||'<tr><td colspan="7" class="empty">No transactions yet.</td></tr>'}
+function todayISO(){let d=new Date();return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")}
+function currentTx(){let k=monthKey();return state.transactions.filter(t=>String(t.date||"").startsWith(k))}
+function totals(){let tx=currentTx(),income=tx.filter(t=>t.type==="income").reduce((a,t)=>a+Number(t.amount||0),0),spent=tx.filter(t=>t.type==="expense").reduce((a,t)=>a+Number(t.amount||0),0),invested=tx.filter(t=>t.type==="expense"&&t.cat==="Investments").reduce((a,t)=>a+Number(t.amount||0),0);return{income,spent,invested}}
+function allocTarget(name){let x=state.allocation.find(a=>a[0]===name);return x?Number(x[1]):0}
+function normalizeCat(cat){return oldNames[cat]||cat||"Others"}
+function actualByCategory(){let out={};requiredNames.forEach(n=>out[n]=0);currentTx().filter(t=>t.type==="expense").forEach(t=>{let c=normalizeCat(t.cat);if(out[c]!==undefined)out[c]+=Number(t.amount||0)});return out}
+function renderBars(el,data,max,colors){if(!data.length){el.innerHTML='<div class="empty">Add transactions to see cash flow.</div>';return}let width=600,barW=Math.max(18,Math.min(65,500/data.length));el.innerHTML=`<svg viewBox="0 0 ${width} 210" preserveAspectRatio="none">${data.map((v,i)=>{let x=30+i*((width-60)/data.length),h=max?Math.max(2,145*Math.abs(v.value)/max):2,y=v.value>=0?175-h:175;return `<rect x="${x}" y="${y}" width="${barW}" height="${h}" rx="7" fill="${colors[i%colors.length]}"></rect><text x="${x+barW/2}" y="195" text-anchor="middle" font-size="10" fill="#697588">${v.label}</text><text x="${x+barW/2}" y="${Math.max(12,y-5)}" text-anchor="middle" font-size="9" fill="#152033">${money(v.value)}</text>`}).join("")}<line x1="20" y1="175" x2="580" y2="175" stroke="rgba(100,115,135,.18)"/></svg>`}
+function pie(el,items){items=items.filter(x=>Number(x.value)>0);if(!items.length){el.innerHTML='<div class="empty">Set your income allocation to see the chart.</div>';return}let total=items.reduce((a,x)=>a+x.value,0)||1,c=0,cx=110,cy=105,r=75;let paths=items.map(x=>{let a=x.value/total*Math.PI*2,s=c;c+=a,large=a>Math.PI?1:0,x1=cx+r*Math.cos(s),y1=cy+r*Math.sin(s),x2=cx+r*Math.cos(c),y2=cy+r*Math.sin(c);return `<path d="M ${cx} ${cy} L ${x1} ${y1} A ${r} ${r} 0 ${large} 1 ${x2} ${y2} Z" fill="${x.color}"/>`}).join("");el.innerHTML=`<svg viewBox="0 0 220 210"><g>${paths}</g><circle cx="${cx}" cy="${cy}" r="43" fill="rgba(255,255,255,.62)"/><text x="${cx}" y="101" text-anchor="middle" font-size="12" fill="#697588">Income</text><text x="${cx}" y="119" text-anchor="middle" font-size="16" font-weight="700" fill="#152033">${money(state.incomeTarget)}</text></svg>`}
+function line(el,data){if(!data.length){el.innerHTML='<div class="empty">Add a monthly snapshot to see your trend.</div>';return}let vals=data.map(x=>Number(x.value)||0),min=Math.min(...vals,0),max=Math.max(...vals,1),range=Math.max(1,max-min),w=560;let pts=data.map((x,i)=>`${30+i*(w-30)/Math.max(1,data.length-1)},${175-(x.value-min)/range*140}`).join(" ");el.innerHTML=`<svg viewBox="0 0 600 210"><polyline points="${pts}" fill="none" stroke="#1677ff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>${data.map((x,i)=>{let xx=30+i*(w-30)/Math.max(1,data.length-1),yy=175-(x.value-min)/range*140;return `<circle cx="${xx}" cy="${yy}" r="5" fill="#fff" stroke="#1677ff" stroke-width="3"/><text x="${xx}" y="198" text-anchor="middle" font-size="9" fill="#697588">${x.month}</text>`}).join("")}</svg>`}
+function renderBudgetHealth(){let box=$("budgetHealth"),actual=actualByCategory(),base=totals().income||state.incomeTarget||0;if(!base){box.innerHTML='<div class="empty">Add income or set your monthly income target.</div>';return}box.innerHTML=requiredNames.map(n=>{let target=base*allocTarget(n)/100,a=actual[n],ratio=target? a/target:0;let cls=ratio>1?"over":ratio>.8?"warn":"ok";let icon=ratio>1?"!":ratio>.8?"~":"✓";return `<div class="budgetItem ${cls}"><span class="budgetIcon">${icon}</span><span>${n}</span><b>${ratio>1?Math.round(ratio*100)+"%":"OK"}</b></div>`}).join("")}
+function renderDashboard(){let t=totals();$("sIncome").textContent=money(t.income);$("sSpent").textContent=money(t.spent);$("sInvested").textContent=money(t.invested);let net=state.netWorth.at(-1)?.value||0;$("sNet").textContent=money(net);$("sIncomeNote").textContent=money(state.incomeTarget?Math.round(t.income/state.incomeTarget*100):0)+"% of target";$("sSpentNote").textContent=(t.income?Math.round(t.spent/t.income*100):0)+"% of income";$("sNetNote").textContent=state.netWorth.length>1?"Tracking history":"Add monthly snapshots";line($("netChart"),state.netWorth);let alloc=state.allocation.map(x=>({label:x[0],value:state.incomeTarget*x[1]/100,color:x[2]}));pie($("pieChart"),alloc);$("pieLegend").innerHTML=alloc.map(x=>`<span><i class="dot" style="background:${x.color}"></i>${x.label} ${x.value&&state.incomeTarget?Math.round(x.value/state.incomeTarget*100):0}%</span>`).join("");let months={};state.transactions.forEach(x=>{let m=String(x.date||"").slice(0,7);if(!m)return;(months[m]??={income:0,expense:0});months[m][x.type==="income"?"income":"expense"]+=Number(x.amount||0)});let keys=Object.keys(months).slice(-6);renderBars($("cashChart"),keys.map(k=>({label:k.slice(5),value:months[k].income-months[k].expense})),Math.max(...keys.map(k=>Math.abs(months[k].income-months[k].expense)),1),["#23a36a","#1677ff","#8168e5","#ed8b32"]);$("allocDash").innerHTML=state.allocation.map(x=>`<div class="allocrow"><span>${x[0]}</span><div class="track"><i style="width:${x[1]}%;background:${x[2]}"></i></div><b>${x[1]}%</b></div>`).join("");let sum=state.allocation.reduce((a,x)=>a+x[1],0);$("allocStatus").textContent=sum===100?"Allocation totals 100%.":"Allocation totals "+sum+"% — adjust it to 100%.";$("goalMini").innerHTML=state.goals.slice(0,3).map(g=>`<div class="goal"><div class="goalhead"><span>${g.name}</span><span>${g.target?Math.round(g.current/g.target*100):0}%</span></div><div class="progress"><i style="width:${Math.min(100,g.target?g.current/g.target*100:0)}%"></i></div></div>`).join("")||'<div class="empty">No goals yet.</div>';$("recent").innerHTML=state.transactions.slice(-5).reverse().map(t=>`<div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid rgba(100,115,135,.1)"><span>${t.desc}<small style="display:block;color:#697588">${t.cat} • ${t.date}</small></span><b class="${t.type==="income"?"pos":"neg"}">${t.type==="income"?"+":"-"}${money(t.amount)}</b></div>`).join("")||'<div class="empty">No transactions yet.</div>';$("portMini").innerHTML=state.assets.map(a=>`<tr><td>${a.name}</td><td>${money(a.value)}</td></tr>`).join("")||'<tr><td class="note">No assets added.</td></tr>';renderBudgetHealth()}
+function renderTx(){$("txTable").innerHTML=state.transactions.slice().reverse().map((t,i)=>`<tr><td>${t.date}</td><td>${t.desc}</td><td>${t.type}</td><td>${t.cat}</td><td>${t.account}</td><td class="${t.type==="income"?"pos":"neg"}">${t.type==="income"?"+":"-"}${money(t.amount)}</td><td><button class="btn" style="padding:5px 8px" onclick="delTx(${state.transactions.length-1-i})">Delete</button></td></tr>`).join("")||'<tr><td colspan="7" class="empty">No transactions yet.</td></tr>'}
 function delTx(i){state.transactions.splice(i,1);save();toast("Transaction deleted")}
-function renderAlloc(){document.getElementById("incomeTarget").value=state.incomeTarget;document.getElementById("allocEdit").innerHTML=state.allocation.map((x,i)=>`<div class="erow"><span>${x[0]}</span><input class="range" type="range" min="0" max="100" value="${x[1]}" data-i="${i}"><b>${x[1]}%</b></div>`).join("");document.querySelectorAll(".range").forEach(r=>r.oninput=()=>{state.allocation[r.dataset.i][1]=+r.value;save();});let sum=state.allocation.reduce((a,x)=>a+x[1],0);document.getElementById("allocMessage").textContent=`${sum}% allocated • ${money(state.incomeTarget)} income → `+state.allocation.map(x=>`${x[0]} ${money(state.incomeTarget*x[1]/100)}`).join(" • ")}
-function renderGoals(){document.getElementById("goalsList").innerHTML=state.goals.map((g,i)=>`<div class="card"><h2>${g.name}</h2><div class="value">${money(g.current)}</div><div class="note">Target ${money(g.target)}</div><div class="progress"><i style="width:${Math.min(100,g.current/g.target*100)}%"></i></div><div class="formactions"><button class="btn" onclick="contrib(${i})">+ Contribution</button><button class="btn" onclick="delGoal(${i})">Delete</button></div></div>`).join("")||'<div class="card empty">No goals yet.</div>'}
+function renderAlloc(){
+ $("incomeTarget").value=state.incomeTarget;
+ $("allocEdit").innerHTML=state.allocation.map((x,i)=>`<div class="erow"><span>${x[0]}</span><div class="track"><i style="width:${Math.min(100,Number(x[1])||0)}%;background:${x[2]}"></i></div><input class="field input allocInput" style="display:block" type="number" min="0" max="100" step="1" value="${x[1]}" data-i="${i}" aria-label="${x[0]} percentage"></div>`).join("");
+ document.querySelectorAll(".allocInput").forEach(r=>r.oninput=()=>{state.allocation[r.dataset.i][1]=Math.max(0,Math.min(100,+r.value||0));save()});
+ let sum=state.allocation.reduce((a,x)=>a+Number(x[1]||0),0);$("allocMessage").textContent=`${sum}% allocated • ${money(state.incomeTarget)} income`;
+ $("allocBarGraph").innerHTML=state.allocation.map(x=>`<div class="allocrow"><span>${x[0]}</span><div class="track"><i style="width:${x[1]}%;background:${x[2]}"></i></div><b>${x[1]}%</b></div>`).join("")
+}
+function renderGoals(){$("goalsList").innerHTML=state.goals.map((g,i)=>`<div class="card"><h2>${g.name}</h2><div class="value">${money(g.current)}</div><div class="note">Target ${money(g.target)}</div><div class="progress"><i style="width:${Math.min(100,g.target?g.current/g.target*100:0)}%"></i></div><div class="formactions"><button class="btn" onclick="contrib(${i})">+ Contribution</button><button class="btn" onclick="delGoal(${i})">Delete</button></div></div>`).join("")||'<div class="card empty">No goals yet.</div>'}
 function contrib(i){let n=+prompt("Contribution amount (₹)","5000");if(n>0){state.goals[i].current+=n;save();toast("Goal updated")}}
 function delGoal(i){state.goals.splice(i,1);save();toast("Goal deleted")}
-function renderAssets(){document.getElementById("assetTable").innerHTML=state.assets.map((a,i)=>`<tr><td>${a.name}</td><td>${a.type}</td><td>${money(a.cost)}</td><td>${money(a.value)}</td><td class="${a.value>=a.cost?"pos":"neg"}">${a.cost?((a.value/a.cost-1)*100).toFixed(1):"0"}%</td><td>${money(a.income)}</td><td><button class="btn" style="padding:5px 8px" onclick="delAsset(${i})">Delete</button></td></tr>`).join("")||'<tr><td colspan="7" class="empty">No assets yet.</td></tr>'}
+function renderAssets(){$("assetTable").innerHTML=state.assets.map((a,i)=>`<tr><td>${a.name}</td><td>${a.type}</td><td>${money(a.cost)}</td><td>${money(a.value)}</td><td class="${a.value>=a.cost?"pos":"neg"}">${a.cost?((a.value/a.cost-1)*100).toFixed(1):"0"}%</td><td>${money(a.income)}</td><td><button class="btn" style="padding:5px 8px" onclick="delAsset(${i})">Delete</button></td></tr>`).join("")||'<tr><td colspan="7" class="empty">No assets yet.</td></tr>'}
 function delAsset(i){state.assets.splice(i,1);save();toast("Asset deleted")}
-function renderTax(){let tx=state.transactions;document.getElementById("taxSalary").textContent=money(tx.filter(x=>x.type==="income"&&x.cat==="Salary").reduce((a,x)=>a+x.amount,0));document.getElementById("taxFreelance").textContent=money(tx.filter(x=>x.type==="income"&&x.cat==="Freelance").reduce((a,x)=>a+x.amount,0));document.getElementById("taxOther").textContent=money(tx.filter(x=>x.type==="income"&&["Dividend","Interest"].includes(x.cat)).reduce((a,x)=>a+x.amount,0))}
-
-function getPlanSettings(){
-  state.plan=state.plan||{growth:5,returnRate:8};
-  return state.plan;
-}
-function renderPlanning(){
-  let ps=getPlanSettings(), income=state.incomeTarget||0, net=state.netWorth.at(-1)?.value||0;
-  document.getElementById("planIncome").value=income;
-  document.getElementById("planGrowth").value=ps.growth;
-  document.getElementById("planReturn").value=ps.returnRate;
-  document.getElementById("planNet").value=net;
-  let investPct=(state.allocation.find(x=>x[0]==="Investments")||["",0])[1]/100;
-  let rows=[], current=net, annualIncome=income*12;
-  for(let y=1;y<=5;y++){
-    if(y>1) annualIncome*=1+(ps.growth/100);
-    let contribution=annualIncome*investPct;
-    current=current*(1+ps.returnRate/100)+contribution;
-    rows.push({year:"Year "+y,income:annualIncome,invested:contribution,net:current});
-  }
-  document.getElementById("planStart").textContent=money(net);
-  document.getElementById("planEnd").textContent=money(rows.at(-1)?.net||net);
-  document.getElementById("planMonthly").textContent=money(income*investPct);
-  document.getElementById("planContrib").textContent=money(rows.reduce((a,r)=>a+r.invested,0));
-  line(document.getElementById("fiveChart"),[{month:"Now",value:net},...rows.map(r=>({month:r.year.replace("Year ","Y"),value:r.net}))]);
-  document.getElementById("planAlloc").innerHTML=state.allocation.map(x=>`<div class="allocrow"><span>${x[0]}</span><div class="track"><i style="width:${x[1]}%;background:${x[2]}"></i></div><b>${money(income*x[1]/100)}</b></div>`).join("");
-  document.getElementById("planTable").innerHTML=rows.map(r=>`<tr><td>${r.year}</td><td>${money(r.income)}</td><td>${money(r.invested)}</td><td>${money(r.net)}</td></tr>`).join("");
-}
-function renderAll(){renderDashboard();renderTx();renderAlloc();renderGoals();renderAssets();renderTax();renderPlanning();document.getElementById("monthLabel").textContent=new Date().toLocaleDateString("en-IN",{month:"long",year:"numeric"})}
-function goPage(page){document.querySelectorAll(".nav button,.mobileNav button").forEach(x=>x.classList.toggle("active",x.dataset.page===page));document.querySelectorAll(".section").forEach(x=>x.classList.remove("active"));let target=document.getElementById(page);if(target)target.classList.add("active");document.getElementById("moreSheet")?.classList.remove("show");window.scrollTo({top:0,behavior:"smooth"});}
-document.querySelectorAll(".nav button,.mobileNav button[data-page]").forEach(b=>b.onclick=()=>goPage(b.dataset.page));
-document.getElementById("moreNav")?.addEventListener("click",()=>document.getElementById("moreSheet").classList.toggle("show"));
-document.querySelectorAll(".moreSheet button").forEach(b=>b.onclick=()=>goPage(b.dataset.page));
-document.querySelectorAll("[data-goto]").forEach(b=>b.onclick=()=>document.querySelector(`[data-page="${b.dataset.goto}"]`).click());
-document.getElementById("incomeTarget").oninput=e=>{state.incomeTarget=+e.target.value||0;save()};document.getElementById("txForm").onsubmit=e=>{e.preventDefault();state.transactions.push({date:document.getElementById("date").value,desc:document.getElementById("desc").value,amount:+document.getElementById("amount").value,type:document.getElementById("type").value,cat:document.getElementById("cat").value,account:document.getElementById("account").value});e.target.reset();document.getElementById("account").value="Savings Account";
-document.getElementById("planIncome").oninput=e=>{state.incomeTarget=+e.target.value||0;save()};
-["planGrowth","planReturn"].forEach(id=>document.getElementById(id).oninput=e=>{state.plan=state.plan||{};state.plan[id==="planGrowth"?"growth":"returnRate"]=+e.target.value||0;save()});
-document.getElementById("planNet").oninput=e=>{
-  let v=+e.target.value||0;
-  if(!state.netWorth.length) state.netWorth=[{month:"Now",value:v}]; else state.netWorth[state.netWorth.length-1].value=v;
-  save();
-};
-document.getElementById("nwForm").onsubmit=e=>{
- e.preventDefault();
- let m=document.getElementById("nwMonth").value,v=+document.getElementById("nwValue").value;
- if(!m||v<0)return;
- let label=new Date(m+"-01T00:00:00").toLocaleDateString("en-IN",{month:"short",year:"numeric"});
- let old=state.netWorth.findIndex(x=>x.month===label);
- if(old>=0)state.netWorth[old].value=v;else state.netWorth.push({month:label,value:v});
- state.netWorth.sort((a,b)=>new Date("1 "+a.month)-new Date("1 "+b.month));
- save();toast("Net-worth snapshot saved");
-};
-document.getElementById("nwMonth").value=new Date().toISOString().slice(0,7);
-
-
-document.getElementById("importBtn").onclick=()=>document.getElementById("importFile").click();
-document.getElementById("importFile").onchange=async e=>{
- let f=e.target.files[0]; if(!f)return;
- try{
-  let d=JSON.parse(await f.text());
-  if(!d || !Array.isArray(d.transactions)) throw new Error("Not a Finance OS backup");
-  state=d; save(); await pushServer(); toast("Backup imported");
- }catch(err){toast("Import failed");}
- e.target.value="";
-};
-async function updateSyncStatus(){
- let el=document.getElementById("syncStatus");
- try{let r=await fetch("/api/data",{cache:"no-store"}); if(!r.ok)throw 0; el.textContent="Private • synced to laptop";serverOnline=true;}
- catch(e){el.textContent="Private • this device";serverOnline=false;}
-}
-
-document.getElementById("date").value=new Date().toISOString().slice(0,10);save();toast("Transaction saved")};
-document.getElementById("goalForm").onsubmit=e=>{e.preventDefault();state.goals.push({name:goalName.value,target:+goalTarget.value,current:+goalCurrent.value});e.target.reset();save();toast("Goal added")};
-document.getElementById("assetForm").onsubmit=e=>{e.preventDefault();state.assets.push({name:assetName.value,type:assetType.value,value:+assetValue.value,cost:+assetCost.value,income:+assetIncome.value});e.target.reset();save();toast("Asset saved")};
-document.getElementById("quickAdd").onclick=()=>document.querySelector('[data-page="transactions"]').click();
-document.getElementById("exportBtn").onclick=()=>{let a=document.createElement("a");a.href=URL.createObjectURL(new Blob([JSON.stringify(state,null,2)],{type:"application/json"}));a.download="finance-os-backup.json";a.click();setTimeout(()=>URL.revokeObjectURL(a.href),500)};
-
-document.getElementById("planIncome").oninput=e=>{state.incomeTarget=+e.target.value||0;save()};
-["planGrowth","planReturn"].forEach(id=>document.getElementById(id).oninput=e=>{state.plan=state.plan||{};state.plan[id==="planGrowth"?"growth":"returnRate"]=+e.target.value||0;save()});
-document.getElementById("planNet").oninput=e=>{
-  let v=+e.target.value||0;
-  if(!state.netWorth.length) state.netWorth=[{month:"Now",value:v}]; else state.netWorth[state.netWorth.length-1].value=v;
-  save();
-};
-document.getElementById("nwForm").onsubmit=e=>{
- e.preventDefault();
- let m=document.getElementById("nwMonth").value,v=+document.getElementById("nwValue").value;
- if(!m||v<0)return;
- let label=new Date(m+"-01T00:00:00").toLocaleDateString("en-IN",{month:"short",year:"numeric"});
- let old=state.netWorth.findIndex(x=>x.month===label);
- if(old>=0)state.netWorth[old].value=v;else state.netWorth.push({month:label,value:v});
- state.netWorth.sort((a,b)=>new Date("1 "+a.month)-new Date("1 "+b.month));
- save();toast("Net-worth snapshot saved");
-};
-document.getElementById("nwMonth").value=new Date().toISOString().slice(0,7);
-
-
-document.getElementById("importBtn").onclick=()=>document.getElementById("importFile").click();
-document.getElementById("importFile").onchange=async e=>{
- let f=e.target.files[0]; if(!f)return;
- try{
-  let d=JSON.parse(await f.text());
-  if(!d || !Array.isArray(d.transactions)) throw new Error("Not a Finance OS backup");
-  state=d; save(); await pushServer(); toast("Backup imported");
- }catch(err){toast("Import failed");}
- e.target.value="";
-};
-async function updateSyncStatus(){
- let el=document.getElementById("syncStatus");
- try{let r=await fetch("/api/data",{cache:"no-store"}); if(!r.ok)throw 0; el.textContent="Private • synced to laptop";serverOnline=true;}
- catch(e){el.textContent="Private • this device";serverOnline=false;}
-}
-
-document.getElementById("date").value=new Date().toISOString().slice(0,10);
-document.getElementById("lockForm").onsubmit=async e=>{e.preventDefault();let setup=lock.dataset.setup==="1";let value=String(pin.value||"").trim();lockMsg.textContent="";if(!/^\d{4,8}$/.test(value)){lockMsg.textContent="Use a 4–8 digit PIN.";pin.focus();return;}lockBtn.disabled=true;try{if(setup){localStorage.setItem("financeOS_pin",value);hideLock();toast("PIN created");}else if(value===getPin()){hideLock();toast("Unlocked");}else{throw new Error("Incorrect PIN");}}catch(err){lockMsg.textContent=err.message||"Could not unlock";pin.value="";pin.focus();}finally{lockBtn.disabled=false;}};
-document.getElementById("logoutBtn").onclick=()=>{authenticated=false;showLock(false);};
-renderAll(); authStatus(); if("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js");
+function renderTax(){let tx=state.transactions;$("taxSalary").textContent=money(tx.filter(x=>x.type==="income"&&x.cat==="Salary").reduce((a,x)=>a+x.amount,0));$("taxFreelance").textContent=money(tx.filter(x=>x.type==="income"&&x.cat==="Freelance").reduce((a,x)=>a+x.amount,0));$("taxOther").textContent=money(tx.filter(x=>x.type==="income"&&["Dividend","Interest"].includes(x.cat)).reduce((a,x)=>a+x.amount,0))}
+function renderPlanning(){let ps=state.plan||defaults.plan,income=state.incomeTarget||0,net=state.netWorth.at(-1)?.value||0;$("planIncome").value=income;$("planGrowth").value=ps.growth;$("planReturn").value=ps.returnRate;$("planNet").value=net;let investPct=(state.allocation.find(x=>x[0]==="Investments")||["",0])[1]/100,rows=[],current=net,annualIncome=income*12;for(let y=1;y<=5;y++){if(y>1)annualIncome*=1+ps.growth/100;let contribution=annualIncome*investPct;current=current*(1+ps.returnRate/100)+contribution;rows.push({year:"Year "+y,income:annualIncome,invested:contribution,net:current})}$("planStart").textContent=money(net);$("planEnd").textContent=money(rows.at(-1)?.net||net);$("planMonthly").textContent=money(income*investPct);$("planContrib").textContent=money(rows.reduce((a,r)=>a+r.invested,0));line($("fiveChart"),[{month:"Now",value:net},...rows.map(r=>({month:r.year.replace("Year ","Y"),value:r.net}))]);$("planAlloc").innerHTML=state.allocation.map(x=>`<div class="allocrow"><span>${x[0]}</span><div class="track"><i style="width:${x[1]}%;background:${x[2]}"></i></div><b>${money(income*x[1]/100)}</b></div>`).join("");$("planTable").innerHTML=rows.map(r=>`<tr><td>${r.year}</td><td>${money(r.income)}</td><td>${money(r.invested)}</td><td>${money(r.net)}</td></tr>`).join("")}
+function renderAll(){renderDashboard();renderTx();renderAlloc();renderGoals();renderAssets();renderTax();renderPlanning();$("monthLabel").textContent=new Date().toLocaleDateString("en-IN",{month:"long",year:"numeric"})}
+function goPage(page){document.querySelectorAll(".nav button,.mobileNav button").forEach(x=>x.classList.toggle("active",x.dataset.page===page));document.querySelectorAll(".section").forEach(x=>x.classList.remove("active"));let target=$(page);if(target)target.classList.add("active");$("moreSheet")?.classList.remove("show");window.scrollTo({top:0,behavior:"smooth"})}
+document.querySelectorAll(".nav button,.mobileNav button[data-page]").forEach(b=>b.onclick=()=>goPage(b.dataset.page));$("moreNav").onclick=()=>$("moreSheet").classList.toggle("show");document.querySelectorAll(".moreSheet button").forEach(b=>b.onclick=()=>goPage(b.dataset.page));document.querySelectorAll("[data-goto]").forEach(b=>b.onclick=()=>goPage(b.dataset.goto));
+$("incomeTarget").oninput=e=>{state.incomeTarget=+e.target.value||0;save()};
+$("txForm").onsubmit=e=>{e.preventDefault();let d=$("date").value||todayISO();state.transactions.push({date:d,desc:$("desc").value.trim(),amount:+$("amount").value||0,type:$("type").value,cat:normalizeCat($("cat").value),account:$("account").value.trim()||"Savings Account"});e.target.reset();$("date").value=todayISO();$("account").value="Savings Account";save();toast("Transaction saved")};
+$("goalForm").onsubmit=e=>{e.preventDefault();state.goals.push({name:$("goalName").value.trim(),target:+$("goalTarget").value,current:+$("goalCurrent").value||0});e.target.reset();save();toast("Goal added")};
+$("assetForm").onsubmit=e=>{e.preventDefault();state.assets.push({name:$("assetName").value.trim(),type:$("assetType").value,value:+$("assetValue").value||0,cost:+$("assetCost").value||0,income:+$("assetIncome").value||0});e.target.reset();save();toast("Asset saved")};
+$("planIncome").oninput=e=>{state.incomeTarget=+e.target.value||0;save()};["planGrowth","planReturn"].forEach(id=>$(id).oninput=e=>{state.plan=state.plan||clone(defaults.plan);state.plan[id==="planGrowth"?"growth":"returnRate"]=+e.target.value||0;save()});
+$("planNet").oninput=e=>{let v=+e.target.value||0;if(!state.netWorth.length)state.netWorth=[{month:new Date().toLocaleDateString("en-IN",{month:"short",year:"numeric"}),value:v}];else state.netWorth[state.netWorth.length-1].value=v;save()};
+$("nwForm").onsubmit=e=>{e.preventDefault();let m=$("nwMonth").value,v=+$("nwValue").value;if(!m||v<0)return;let label=new Date(m+"-01T00:00:00").toLocaleDateString("en-IN",{month:"short",year:"numeric"}),old=state.netWorth.findIndex(x=>x.month===label);if(old>=0)state.netWorth[old].value=v;else state.netWorth.push({month:label,value:v});state.netWorth.sort((a,b)=>new Date("1 "+a.month)-new Date("1 "+b.month));save();toast("Net-worth snapshot saved")};
+$("nwMonth").value=new Date().toISOString().slice(0,7);$("date").value=todayISO();
+function exportBackup(){let a=document.createElement("a");a.href=URL.createObjectURL(new Blob([JSON.stringify(state,null,2)],{type:"application/json"}));a.download="finance-os-backup.json";a.click();setTimeout(()=>URL.revokeObjectURL(a.href),500)}
+$("exportBtn").onclick=exportBackup;$("exportBtn2").onclick=exportBackup;$("importBtn").onclick=()=>$("importFile").click();$("importFile").onchange=async e=>{let f=e.target.files[0];if(!f)return;try{let d=JSON.parse(await f.text());if(!d||!Array.isArray(d.transactions))throw 0;state=d;save();toast("Backup imported")}catch(err){toast("Import failed")}e.target.value=""};
+function confirmDelete(){let entered=prompt("Enter your 4-digit PIN to delete ALL Finance OS data:");if(entered===null)return;if(entered!==getPin()){alert("Incorrect PIN. Nothing was deleted.");return}if(!confirm("This permanently deletes all Finance OS data stored on this iPhone. Continue?"))return;localStorage.removeItem(KEY);localStorage.removeItem("financeOS_pin");state=clone(defaults);authenticated=false;renderAll();showLock(true);toast("All data deleted")}
+$("deleteAllBtn").onclick=confirmDelete;
+$("quickAdd").onclick=()=>goPage("transactions");$("logoutBtn").onclick=()=>{authenticated=false;showLock(false)};
+$("lockForm").onsubmit=e=>{e.preventDefault();let setup=lock.dataset.setup==="1",value=String(pin.value||"").trim();lockMsg.textContent="";if(!/^\d{4}$/.test(value)){lockMsg.textContent="Use exactly 4 digits.";pin.focus();return}lockBtn.disabled=true;try{if(setup){localStorage.setItem("financeOS_pin",value);hideLock();toast("PIN created")}else if(value===getPin()){hideLock();toast("Unlocked")}else throw new Error("Incorrect PIN")}catch(err){lockMsg.textContent=err.message;pin.value="";pin.focus()}finally{lockBtn.disabled=false}};
+$("pin").addEventListener("input",()=>{$("pin").value=$("pin").value.replace(/\D/g,"").slice(0,4)});
+renderAll();if(!getPin())showLock(true);else showLock(false);if("serviceWorker" in navigator)navigator.serviceWorker.register("sw.js");
 </script></body></html>
